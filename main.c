@@ -21,6 +21,33 @@ void execOperacoesArvore(
 #define numParametros 10000
 #define numAmostras 10
 
+void *wrapper_addArvoreAvl(void *tree, int value) {
+    return (void *)addArvoreAvl((ArvoreAvl *)tree, value);
+}
+
+void *wrapper_removeArvoreAvl(void *tree, int value) {
+    return (void *)removeArvoreAvl((ArvoreAvl *)tree, value);
+}
+
+void *wrapper_addArvoreRb(void *tree, int value) {
+    return (void *)addArvoreRb((RedBlack *)tree, value);
+}
+
+void *wrapper_removeArvoreRb(void *tree, int value) {
+    removeArvoreRb((RedBlack *)tree, value);
+    return NULL;
+}
+
+void *wrapper_addChaveArvoreBTree(void *tree, int value) {
+    addChaveArvoreBTree((ArvoreB *)tree, value);
+    return NULL;
+}
+
+void *wrapper_removeChaveArvoreBTree(void *tree, int value) {
+    removeChaveArvoreBTree((ArvoreB *)tree, value);
+    return NULL;
+}
+
 int main() {
 
     srand(time(NULL));
@@ -39,29 +66,29 @@ int main() {
 
         //Executando operacoes para todas as arvores abaixo
         ArvoreAvl * avl = criaArvoreAvl();
-        execOperacoesArvore("AVL", avl, "Insercao", addArvoreAvl, valores, getContInvercaoAvl, i+1, resultado);
-        execOperacoesArvore("AVL", avl, "Remocao", removeArvoreAvl, valores, getContRemocaoAvl, i+1, resultado);
+        execOperacoesArvore("AVL", avl, "Insercao", wrapper_addArvoreAvl, valores, getContInvercaoAvl, i+1, resultado);
+        execOperacoesArvore("AVL", avl, "Remocao", wrapper_removeArvoreAvl, valores, getContRemocaoAvl, i+1, resultado);
         free(avl);
         
         RedBlack * rb = criaArvoreRb();
-        execOperacoesArvore("RedBlack", rb, "Insercao", addArvoreRb, valores, getContInvercaoRb, i+1, resultado);
-        execOperacoesArvore("RedBlack", rb, "Remocao", removeArvoreRb, valores, getContRemocaoRb, i+1, resultado);
+        execOperacoesArvore("RedBlack", rb, "Insercao", wrapper_addArvoreRb, valores, getContInvercaoRb, i+1, resultado);
+        execOperacoesArvore("RedBlack", rb, "Remocao", wrapper_removeArvoreRb, valores, getContRemocaoRb, i+1, resultado);
         free(rb);
         
         ArvoreB *bTreeOrdem1 = criarArvoreBTree(1);
-        execOperacoesArvore("B-Tree ordem 1", bTreeOrdem1, "Insercao", addChaveArvoreBTree, valores, getContInsercaoBTree, i+1, resultado);
-        execOperacoesArvore("B-Tree ordem 1", bTreeOrdem1, "Remocao", removeChaveArvoreBTree, valores, getContRemocaoBTree, i+1, resultado);
+        execOperacoesArvore("B-Tree ordem 1", bTreeOrdem1, "Insercao", wrapper_addChaveArvoreBTree, valores, getContInsercaoBTree, i+1, resultado);
+        execOperacoesArvore("B-Tree ordem 1", bTreeOrdem1, "Remocao", wrapper_removeChaveArvoreBTree, valores, getContRemocaoBTree, i+1, resultado);
         free(bTreeOrdem1);
         
-        ArvoreB *bTreeOrdem2 = criarArvoreBTree(5);
-        execOperacoesArvore("B-Tree ordem 5", bTreeOrdem2, "Insercao", addChaveArvoreBTree, valores, getContInsercaoBTree, i+1, resultado);
-        execOperacoesArvore("B-Tree ordem 5", bTreeOrdem2, "Remocao", removeChaveArvoreBTree, valores, getContRemocaoBTree, i+1, resultado);
-        free(bTreeOrdem2);
+        ArvoreB *bTreeOrdem5 = criarArvoreBTree(5);
+        execOperacoesArvore("B-Tree ordem 5", bTreeOrdem5, "Insercao", wrapper_addChaveArvoreBTree, valores, getContInsercaoBTree, i+1, resultado);
+        execOperacoesArvore("B-Tree ordem 5", bTreeOrdem5, "Remocao", wrapper_removeChaveArvoreBTree, valores, getContRemocaoBTree, i+1, resultado);
+        free(bTreeOrdem5);
 
-        ArvoreB *bTreeOrdem3 = criarArvoreBTree(10);
-        execOperacoesArvore("B-Tree ordem 10", bTreeOrdem3, "Insercao", addChaveArvoreBTree, valores, getContInsercaoBTree, i+1, resultado);
-        execOperacoesArvore("B-Tree ordem 10", bTreeOrdem3, "Remocao", removeChaveArvoreBTree, valores, getContRemocaoBTree, i+1, resultado);
-        free(bTreeOrdem3);   
+        ArvoreB *bTreeOrdem10 = criarArvoreBTree(10);
+        execOperacoesArvore("B-Tree ordem 10", bTreeOrdem10, "Insercao", wrapper_addChaveArvoreBTree, valores, getContInsercaoBTree, i+1, resultado);
+        execOperacoesArvore("B-Tree ordem 10", bTreeOrdem10, "Remocao", wrapper_removeChaveArvoreBTree, valores, getContRemocaoBTree, i+1, resultado);
+        free(bTreeOrdem10);   
         //Executando operacoes para todas as arvores acima
     }
 
@@ -69,6 +96,9 @@ int main() {
 }
 
 //Funções adicionais abaixo
+
+
+
 void execOperacoesArvore(
     char * nomeArvore,
     void * arvore,
